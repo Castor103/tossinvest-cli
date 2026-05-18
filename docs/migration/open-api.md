@@ -13,12 +13,15 @@ document 입니다. issue [#31](https://github.com/JungHoonGhae/tossinvest-cli/i
 
 ## 토스 Open API 의 윤곽 (corp.tossinvest.com/ko/open-api 기준)
 
-- **Base URL:** `https://openapi.tossinvest.com/v1`
-- **인증:** `Authorization: Bearer <token>` + `X-Tossinvest-Account: <accountSeq>` 헤더
-- **프로토콜:** REST + WebSocket
-- **공개 표면:** 시세 (실시간 호가/체결/캔들), 주문 (국내+해외 통합), 계좌 조회, 종목/시장 정보
-- **자격:** 토스증권 계좌 보유자만 사전 신청 가능. 사전 신청 후 순차 롤링으로 토큰 발급 예상
-- **출시 일자:** 명시되지 않음 (광고 심의 종료 2027-05-13 이전 정식 출시 가능성)
+아래는 마케팅 페이지에 노출된 example 코드와 본문에서 읽은 내용입니다. 실제 endpoint
+스펙·헤더·필드는 토큰 발급 후 직접 확인하기 전까지 *추정* 입니다.
+
+- **Base URL:** `https://openapi.tossinvest.com/v1` *(페이지 예시 코드 기준, 미검증)*
+- **인증:** `Authorization: Bearer <token>` + `X-Tossinvest-Account: <accountSeq>` 헤더 *(페이지 예시 기준, 미검증)*
+- **프로토콜:** REST + WebSocket *(페이지 본문)*
+- **공개 표면:** 시세 (실시간 호가/체결/캔들), 주문 (국내+해외 통합 마케팅), 계좌 조회, 종목/시장 정보. 각 표면의 endpoint 와 거래 권한 모델은 미공개
+- **자격:** 토스증권 계좌 보유자만 사전 신청 가능 *(페이지 본문)*
+- **출시 일자:** 명시되지 않음. 사전 신청 후 순차 롤링은 일반 패턴 추정일 뿐, 토스가 어떤 순서/속도로 푸는지는 미공개
 
 ## 우리 포지셔닝 변화
 
@@ -53,21 +56,21 @@ Backend: toss-session (active)
 Official API: not yet (waitlist) — apply at https://corp.tossinvest.com/ko/open-api
 ```
 
-토큰 발급 후:
+토큰 발급 후 (정확한 필드명/만료 정책은 실제 토큰 받은 후 확정):
 ```
-Backend: toss-official (token expires 2027-XX-XX)
+Backend: toss-official (token expires ...)
 Session fallback: configured
 ```
 
 ## 위험 요소
 
 1. **비공식 endpoint 차단 가능성** — 공식 출시 후 토스가 reverse-engineered 접근을
-   정책/기술적으로 막을 가능성. 광고 심의 종료일 (2027-05-13) 이전 정식 출시 시 1년
-   timeline 의 후반에 risk. 이 경우 phase 2 종료 시점에 session 백엔드 강제 retire
+   정책/기술적으로 막을 수 있음. 그 시점에 session 백엔드는 빠르게 deprecate 가 강제될
+   수 있음
 2. **공식 API 의 거래 권한** — official 이 거래 권한을 별도 신청해야 할 가능성 (대부분
-   증권사가 그럼). tossctl 의 거래 기능은 official 백엔드에서 분기 처리 필요할 수 있음
-3. **추상화 over-engineering** — 공식 표면을 직접 보기 전에 `Broker` interface 를
-   설계하면 잘못 잡을 확률 ↑. Phase 1 진입 (= 토큰 발급 직접 확인) 전까지 추상화 보류
+   증권사가 그럼). 이 경우 tossctl 의 거래 기능은 official 백엔드에서 분기 처리 필요
+3. **추상화 over-engineering** — 공식 표면을 직접 보기 전에 interface 를 짜면 잘못
+   잡을 확률 ↑. (관련 결정은 아래 *결정 log* 참조)
 
 ## 결정 log
 
@@ -81,4 +84,4 @@ Session fallback: configured
 1. 토스 Open API 토큰을 받으셨다면 issue #31 에 댓글로 알려주세요 — phase 1 진입
    판단의 가장 빠른 신호. 토큰/계정번호 같은 민감 정보는 절대 공개 댓글에 붙이지 마세요
 2. 공식 API 의 endpoint/스펙 문서를 발견하시면 issue #31 에 링크 공유 환영
-3. 이 문서의 timeline/계획 자체에 의견 있으면 PR 또는 issue 환영
+3. 이 문서의 timeline/계획에 의견 있으면 issue #31 댓글 또는 별도 PR 환영
