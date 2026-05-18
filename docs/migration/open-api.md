@@ -6,6 +6,10 @@ document 입니다. issue [#31](https://github.com/JungHoonGhae/tossinvest-cli/i
 이 트래킹 anchor.
 
 > **status:** Phase 0 (사전 신청 진행 중) · 마지막 업데이트 2026-05-19
+>
+> **⚠ 본 문서의 계획·timeline·phase 정의·우선순위는 사전 공지 없이 바뀔 수 있습니다.**
+> 토스 공식 표면이 실제로 드러나는 시점, 자원/시간 사정, 새로운 정보에 따라 유연하게
+> 재조정합니다. 여기 적힌 내용은 commitment 가 아니라 "현 시점 stance" 입니다.
 
 ## 토스 Open API 의 윤곽 (corp.tossinvest.com/ko/open-api 기준)
 
@@ -25,7 +29,10 @@ document 입니다. issue [#31](https://github.com/JungHoonGhae/tossinvest-cli/i
 같은 명령어로 다룸. 사용자가 토큰을 받았든 안 받았든 `tossctl portfolio positions` 의
 표면은 동일.
 
-## Phase 별 계획
+## Phase 별 계획 (잠정)
+
+표 안의 phase 정의·동작·작업 모두 잠정. 공식 표면이 드러나면 항목이 합쳐지거나
+분리되거나 순서가 바뀔 수 있습니다.
 
 | Phase | 트리거 | tossctl 동작 | 작업 |
 |---|---|---|---|
@@ -62,9 +69,12 @@ Session fallback: configured
 3. **추상화 over-engineering** — 공식 표면을 직접 보기 전에 `Broker` interface 를
    설계하면 잘못 잡을 확률 ↑. Phase 1 진입 (= 토큰 발급 직접 확인) 전까지 추상화 보류
 
-## 결정 history
+## 결정 log
 
-- **2026-05-19** — issue #31 등록 (제보: @DaeHyeoNi). 사전 신청 페이지 확인. 사전 신청 진행. tossctl 의 일반화 (multi-broker) 방향 잠정 합의. Phase 1 진입 전까지 코드 추상화 보류 결정. 트래킹 anchor 는 issue #31 + 본 문서
+각 항목은 *그 시점의* stance. 이후 정보로 뒤집힐 수 있고, 뒤집힐 때 사전 공지하지
+않습니다 — 새 항목을 추가할 뿐입니다.
+
+- **2026-05-19** — issue #31 등록 (제보: @DaeHyeoNi). 사전 신청 페이지 확인. 사전 신청 진행. tossctl 의 일반화 (multi-broker) 방향을 *현재로서는* 선호. Phase 1 진입 전까지 코드 추상화는 보류 — 공식 표면을 보기 전 추상화는 잘못 잡을 확률이 크다는 판단
 
 ## 외부 contributor / 사용자에게 부탁
 
