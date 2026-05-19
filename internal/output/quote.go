@@ -99,6 +99,10 @@ func writeQuoteTable(w io.Writer, quote domain.Quote) error {
 }
 
 func WriteQuotes(w io.Writer, format Format, quotes []domain.Quote) error {
+	return WriteQuotesWithCharts(w, format, quotes, nil)
+}
+
+func WriteQuotesWithCharts(w io.Writer, format Format, quotes []domain.Quote, charts []domain.Chart) error {
 	switch format {
 	case FormatJSON:
 		encoder := json.NewEncoder(w)
@@ -122,13 +126,17 @@ func WriteQuotes(w io.Writer, format Format, quotes []domain.Quote) error {
 		writer.Flush()
 		return writer.Error()
 	case FormatTable:
-		for _, q := range quotes {
+		for i, q := range quotes {
 			changeStr := fmt.Sprintf("%.2f", q.Change)
 			if q.Change > 0 {
 				changeStr = "+" + changeStr
 			}
-			if _, err := fmt.Fprintf(w, "%-8s %-20s %12s %s (%.2f%%)\n",
-				q.Symbol, q.Name, formatFloat(q.Last), changeStr, q.ChangeRate*100,
+			sparkline := ""
+			if charts != nil && i < len(charts) && len(charts[i].Candles) > 0 {
+				sparkline = "  " + renderSparkline(charts[i].Candles, 20)
+			}
+			if _, err := fmt.Fprintf(w, "%-8s %-20s %12s %s (%.2f%%)%s\n",
+				q.Symbol, q.Name, formatFloat(q.Last), changeStr, q.ChangeRate*100, sparkline,
 			); err != nil {
 				return err
 			}
