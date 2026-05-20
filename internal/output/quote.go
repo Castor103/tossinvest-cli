@@ -99,6 +99,10 @@ func writeQuoteTable(w io.Writer, quote domain.Quote) error {
 }
 
 func WriteQuotes(w io.Writer, format Format, quotes []domain.Quote) error {
+	return WriteQuotesWithCharts(w, format, quotes, nil)
+}
+
+func WriteQuotesWithCharts(w io.Writer, format Format, quotes []domain.Quote, charts []domain.Chart) error {
 	switch format {
 	case FormatJSON:
 		encoder := json.NewEncoder(w)
@@ -122,20 +126,32 @@ func WriteQuotes(w io.Writer, format Format, quotes []domain.Quote) error {
 		writer.Flush()
 		return writer.Error()
 	case FormatTable:
+		showCharts := charts != nil
 		headers := []string{"종목", "이름", "현재가", "변동", "변동률"}
+		if showCharts {
+			headers = append(headers, "차트")
+		}
 		var rows [][]string
-		for _, q := range quotes {
+		for i, q := range quotes {
 			changeStr := formatKRW(q.Change)
 			if q.Change > 0 {
 				changeStr = "+" + changeStr
 			}
-			rows = append(rows, []string{
+			row := []string{
 				q.Symbol,
 				q.Name,
 				formatKRW(q.Last),
 				changeStr,
 				formatPct(q.ChangeRate),
-			})
+			}
+			if showCharts {
+				sparkline := ""
+				if i < len(charts) && len(charts[i].Candles) > 0 {
+					sparkline = renderSparkline(charts[i].Candles, 20)
+				}
+				row = append(row, sparkline)
+			}
+			rows = append(rows, row)
 		}
 		return renderTable(w, headers, rows)
 	default:

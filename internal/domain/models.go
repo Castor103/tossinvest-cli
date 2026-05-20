@@ -160,6 +160,25 @@ type WithdrawableBottomSheetEntry struct {
 	USD   float64 `json:"usd,omitempty"`
 }
 
+type Candle struct {
+	Time   time.Time `json:"time"`
+	Open   float64   `json:"open"`
+	High   float64   `json:"high"`
+	Low    float64   `json:"low"`
+	Close  float64   `json:"close"`
+	Volume float64   `json:"volume,omitempty"`
+}
+
+type Chart struct {
+	ProductCode string    `json:"product_code"`
+	Symbol      string    `json:"symbol,omitempty"`
+	Name        string    `json:"name,omitempty"`
+	Interval    string    `json:"interval"`
+	Base        float64   `json:"base,omitempty"`
+	Candles     []Candle  `json:"candles"`
+	FetchedAt   time.Time `json:"fetched_at"`
+}
+
 type Quote struct {
 	ProductCode    string    `json:"product_code,omitempty"`
 	Symbol         string    `json:"symbol"`
